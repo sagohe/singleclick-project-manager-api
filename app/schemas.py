@@ -2,37 +2,38 @@ from datetime import date
 from pydantic import BaseModel, EmailStr, Field, field_validator
 from typing import Optional, List, Literal
 
+# Uso Pydantic por la organizacion y practica al usar una db
 
-ProjectStatus = Literal["IN_PROGRESS", "DONE"]
+EstadoProyecto = Literal["EN_PROGRESO", "DONE"]
 
-
-class MemberBase(BaseModel):
-    name: str = Field(min_length=2, max_length=120)
-    role: Optional[str] = Field(default=None, max_length=120)
+# Esquemas del miembro
+class MiembroBase(BaseModel):
+    nombre: str = Field(min_length=2, max_length=120)
+    rol: Optional[str] = Field(default=None, max_length=120)
     email: EmailStr
 
 
-class MemberCreate(MemberBase):
+class CrearMiembro(MiembroBase):
     pass
 
 
-class MemberUpdate(BaseModel):
-    name: Optional[str] = Field(default=None, min_length=2, max_length=120)
-    role: Optional[str] = Field(default=None, max_length=120)
+class ActualizarMiembro(BaseModel):
+    nombre: Optional[str] = Field(default=None, min_length=2, max_length=120)
+    rol: Optional[str] = Field(default=None, max_length=120)
     email: Optional[EmailStr] = None
 
 
-class MemberOut(MemberBase):
+class SalidaMiembro(MiembroBase):
     id: int
 
     class Config:
         from_attributes = True
 
-
-class ProjectBase(BaseModel):
-    name: str = Field(min_length=2, max_length=120)
-    description: Optional[str] = Field(default=None, max_length=500)
-    status: ProjectStatus = "IN_PROGRESS"
+# Esquemas del proyecto
+class ProyectoBase(BaseModel):
+    nombre: str = Field(min_length=2, max_length=120)
+    descripcion: Optional[str] = Field(default=None, max_length=500)
+    estado: EstadoProyecto = "EN_PROGRESO"
     start_date: Optional[date] = None
     end_date: Optional[date] = None
 
@@ -45,14 +46,14 @@ class ProjectBase(BaseModel):
         return v
 
 
-class ProjectCreate(ProjectBase):
+class CrearProyecto(ProyectoBase):
     pass
 
 
-class ProjectUpdate(BaseModel):
-    name: Optional[str] = Field(default=None, min_length=2, max_length=120)
-    description: Optional[str] = Field(default=None, max_length=500)
-    status: Optional[ProjectStatus] = None
+class ActualizarProyecto(BaseModel):
+    nombre: Optional[str] = Field(default=None, min_length=2, max_length=120)
+    descripcion: Optional[str] = Field(default=None, max_length=500)
+    estado: Optional[EstadoProyecto] = None
     start_date: Optional[date] = None
     end_date: Optional[date] = None
 
@@ -65,20 +66,20 @@ class ProjectUpdate(BaseModel):
         return v
 
 
-class ProjectOut(ProjectBase):
+class SalidaProyecto(ProyectoBase):
     id: int
-    members: List[MemberOut] = []
+    miembros: List[SalidaMiembro] = []
 
     class Config:
         from_attributes = True
 
 
-class AssignMember(BaseModel):
-    member_id: int
+class AsignarMiembro(BaseModel):
+    miembro_id: int
 
 
-class SummaryReport(BaseModel):
-    total_projects: int
-    in_progress: int
+class Resumen(BaseModel):
+    total_proyectos: int
+    en_progreso: int
     done: int
-    total_members: int
+    miembros_totales: int
