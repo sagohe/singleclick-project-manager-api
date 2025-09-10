@@ -55,8 +55,8 @@ def eliminar_proyecto(proyecto_id: int, db: Session = Depends(get_db)):
     return None
 
 
-@router.post("/{proyecto_id}/assign", response_model=schemas.SalidaProyecto)
-def assign_miembro(proyecto_id: int, payload: schemas.AsignarMiembro, db: Session = Depends(get_db)):
+@router.post("/{proyecto_id}/asignar", response_model=schemas.SalidaProyecto)
+def asignar_miembro(proyecto_id: int, payload: schemas.AsignarMiembro, db: Session = Depends(get_db)):
     proyecto = db.get(models.Proyecto, proyecto_id)
     if not proyecto:
         raise HTTPException(status_code=404, detail="Proyecto no encontrado")
