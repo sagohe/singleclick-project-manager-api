@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SingleClick – Gestión de Grupos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <style>
+    .toast { animation: fade 3.5s ease forwards; }
+    @keyframes fade { 0%{opacity:0;transform:translateY(-6px)}
+      10%{opacity:1;transform:translateY(0)}
+      90%{opacity:1}
+      100%{opacity:0;transform:translateY(-6px)} }
+    .modal { background: rgba(0,0,0,.38); }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-2xl bg-slate-900 text-white grid place-items-center font-bold">SC</div>
+        <div>
+          <h1 class="text-xl font-semibold">SingleClick – Gestión de Grupos</h1>
+          <p class="text-sm text-slate-500">Demo para reclutadores • FastAPI + Frontend limpio</p>
+        </div>
+      </div>
+      <nav class="flex items-center gap-4">
+        <a href="/web" class="text-sm text-slate-600 hover:text-slate-900">Inicio</a>
+        <a href="/docs" class="text-sm text-slate-500 hover:text-slate-700 underline">API (/docs)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+    <!-- Resumen -->
+    <section>
+      <h2 class="text-lg font-medium mb-3">Resumen</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="cards-resumen">
+        <div class="rounded-2xl border bg-white p-5">
+          <p class="text-sm text-slate-500">Proyectos</p>
+          <p class="text-3xl font-semibold" id="card-proyectos">—</p>
+        </div>
+        <div class="rounded-2xl border bg-white p-5">
+          <p class="text-sm text-slate-500">En progreso</p>
+          <p class="text-3xl font-semibold" id="card-en-progreso">—</p>
+        </div>
+        <div class="rounded-2xl border bg-white p-5">
+          <p class="text-sm text-slate-500">Finalizados</p>
+          <p class="text-3xl font-semibold" id="card-done">—</p>
+        </div>
+        <div class="rounded-2xl border bg-white p-5">
+          <p class="text-sm text-slate-500">Miembros</p>
+          <p class="text-3xl font-semibold" id="card-miembros">—</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabs -->
+    <section class="space-y-4">
+      <div class="flex items-center gap-2">
+        <button id="tab-miembros" class="px-4 py-2 rounded-xl bg-slate-900 text-white">Miembros</button>
+        <button id="tab-proyectos" class="px-4 py-2 rounded-xl hover:bg-slate-200">Proyectos</button>
+      </div>
+
+      <!-- Panel Miembros -->
+      <div id="panel-miembros" class="space-y-6">
+        <!-- Crear miembro -->
+        <div class="rounded-2xl border bg-white p-5">
+          <h3 class="font-semibold mb-3">Crear miembro</h3>
+          <form id="form-miembro" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <input class="border rounded-xl px-3 py-2" type="text" name="nombre" placeholder="Nombre" required minlength="2" />
+            <input class="border rounded-xl px-3 py-2" type="text" name="rol" placeholder="Rol (opcional)" />
+            <input class="border rounded-xl px-3 py-2" type="email" name="email" placeholder="Email" required />
+            <button class="rounded-xl bg-slate-900 text-white px-4 py-2">Guardar</button>
+          </form>
+          <p id="msg-miembro" class="text-sm text-red-600 mt-2 hidden"></p>
+        </div>
+
+        <!-- Lista + Buscador -->
+        <div class="rounded-2xl border bg-white p-5">
+          <div class="flex items-center justify-between mb-3 gap-3">
+            <h3 class="font-semibold">Miembros</h3>
+            <div class="flex items-center gap-2">
+              <input id="search-miembros" class="border rounded-lg px-3 py-1.5 text-sm" placeholder="Buscar por nombre, email..."/>
+              <button id="btn-refrescar-miembros" class="text-sm px-3 py-1.5 rounded-lg border hover:bg-slate-100">Refrescar</button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="text-left border-b">
+                  <th class="py-2 pr-3">ID</th>
+                  <th class="py-2 pr-3">Nombre</th>
+                  <th class="py-2 pr-3">Rol</th>
+                  <th class="py-2 pr-3">Email</th>
+                  <th class="py-2 pr-3">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-miembros"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel Proyectos -->
+      <div id="panel-proyectos" class="space-y-6 hidden">
+        <!-- Crear proyecto -->
+        <div class="rounded-2xl border bg-white p-5">
+          <h3 class="font-semibold mb-3">Crear proyecto</h3>
+          <form id="form-proyecto" class="grid grid-cols-1 md:grid-cols-6 gap-4">
+            <input class="border rounded-xl px-3 py-2 md:col-span-2" type="text" name="nombre" placeholder="Nombre" required minlength="2" />
+            <input class="border rounded-xl px-3 py-2 md:col-span-2" type="text" name="descripcion" placeholder="Descripción (opcional)" />
+            <select class="border rounded-xl px-3 py-2" name="estado">
+              <option value="EN_PROGRESO">EN_PROGRESO</option>
+              <option value="DONE">DONE</option>
+            </select>
+            <input class="border rounded-xl px-3 py-2" type="date" name="start_date" />
+            <input class="border rounded-xl px-3 py-2" type="date" name="end_date" />
+            <button class="rounded-xl bg-slate-900 text-white px-4 py-2 md:col-span-1">Guardar</button>
+          </form>
+          <p id="msg-proyecto" class="text-sm text-red-600 mt-2 hidden"></p>
+        </div>
+
+        <!-- Lista + Buscador -->
+        <div class="rounded-2xl border bg-white p-5">
+          <div class="flex items-center justify-between mb-3 gap-3">
+            <h3 class="font-semibold">Proyectos</h3>
+            <div class="flex items-center gap-2">
+              <input id="search-proyectos" class="border rounded-lg px-3 py-1.5 text-sm" placeholder="Buscar por nombre..."/>
+              <button id="btn-refrescar-proyectos" class="text-sm px-3 py-1.5 rounded-lg border hover:bg-slate-100">Refrescar</button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="text-left border-b">
+                  <th class="py-2 pr-3">ID</th>
+                  <th class="py-2 pr-3">Nombre</th>
+                  <th class="py-2 pr-3">Estado</th>
+                  <th class="py-2 pr-3">Inicio</th>
+                  <th class="py-2 pr-3">Fin</th>
+                  <th class="py-2 pr-3">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-proyectos"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modales -->
+  <!-- Editar Miembro -->
+  <div id="modal-edit-miembro" class="modal fixed inset-0 hidden place-items-center">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
+      <h3 class="font-semibold mb-4">Editar miembro</h3>
+      <form id="form-edit-miembro" class="space-y-3">
+        <input type="hidden" name="id" />
+        <input class="border rounded-xl w-full px-3 py-2" name="nombre" placeholder="Nombre" required minlength="2"/>
+        <input class="border rounded-xl w-full px-3 py-2" name="rol" placeholder="Rol (opcional)"/>
+        <input class="border rounded-xl w-full px-3 py-2" name="email" placeholder="Email" type="email" required/>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" data-close="#modal-edit-miembro" class="px-4 py-2 rounded-xl border">Cancelar</button>
+          <button class="px-4 py-2 rounded-xl bg-slate-900 text-white">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Editar Proyecto -->
+  <div id="modal-edit-proyecto" class="modal fixed inset-0 hidden place-items-center">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6">
+      <h3 class="font-semibold mb-4">Editar proyecto</h3>
+      <form id="form-edit-proyecto" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <input type="hidden" name="id" />
+        <input class="border rounded-xl px-3 py-2" name="nombre" placeholder="Nombre" required minlength="2"/>
+        <input class="border rounded-xl px-3 py-2" name="descripcion" placeholder="Descripción (opcional)"/>
+        <select class="border rounded-xl px-3 py-2" name="estado">
+          <option value="EN_PROGRESO">EN_PROGRESO</option>
+          <option value="DONE">DONE</option>
+        </select>
+        <input class="border rounded-xl px-3 py-2" type="date" name="start_date"/>
+        <input class="border rounded-xl px-3 py-2" type="date" name="end_date"/>
+        <div class="md:col-span-2 flex justify-end gap-2 pt-2">
+          <button type="button" data-close="#modal-edit-proyecto" class="px-4 py-2 rounded-xl border">Cancelar</button>
+          <button class="px-4 py-2 rounded-xl bg-slate-900 text-white">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Asignar Miembro a Proyecto -->
+  <div id="modal-assign" class="modal fixed inset-0 hidden place-items-center">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
+      <h3 class="font-semibold mb-4">Asignar miembro al proyecto</h3>
+      <form id="form-assign" class="space-y-3">
+        <input type="hidden" name="proyecto_id"/>
+        <select name="miembro_id" class="border rounded-xl w-full px-3 py-2"></select>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" data-close="#modal-assign" class="px-4 py-2 rounded-xl border">Cancelar</button>
+          <button class="px-4 py-2 rounded-xl bg-slate-900 text-white">Asignar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toaster -->
+  <div id="toasts" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+  <script>
+    // ------------- Helpers -------------
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+    const showToast = (msg, ok=true) => {
+      const wrap = document.createElement('div');
+      wrap.className = `toast px-4 py-3 rounded-xl shadow border ${ok ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800'}`;
+      wrap.textContent = msg;
+      $('#toasts').appendChild(wrap);
+      setTimeout(() => wrap.remove(), 3600);
+    };
+    const fmt = (d)=> d ? new Date(d).toISOString().slice(0,10) : '';
+
+    const openModal = (sel) => { const m=$(sel); m.classList.remove('hidden'); m.classList.add('grid'); };
+    const closeModal = (sel) => { const m=$(sel); m.classList.add('hidden'); m.classList.remove('grid'); };
+    document.addEventListener('click', (e)=>{
+      const btn = e.target.closest('[data-close]');
+      if (btn) closeModal(btn.getAttribute('data-close'));
+      if (e.target.classList.contains('modal')) e.target.classList.add('hidden');
+    });
+
+    // ------------- Tabs -------------
+    $('#tab-miembros').addEventListener('click', () => {
+      $('#tab-miembros').className = 'px-4 py-2 rounded-xl bg-slate-900 text-white';
+      $('#tab-proyectos').className = 'px-4 py-2 rounded-xl hover:bg-slate-200';
+      $('#panel-miembros').classList.remove('hidden');
+      $('#panel-proyectos').classList.add('hidden');
+    });
+    $('#tab-proyectos').addEventListener('click', () => {
+      $('#tab-proyectos').className = 'px-4 py-2 rounded-xl bg-slate-900 text-white';
+      $('#tab-miembros').className = 'px-4 py-2 rounded-xl hover:bg-slate-200';
+      $('#panel-proyectos').classList.remove('hidden');
+      $('#panel-miembros').classList.add('hidden');
+    });
+
+    // ------------- Resumen -------------
+    async function cargarResumen() {
+      try {
+        const r = await fetch('/reportes/informacion');
+        const j = await r.json();
+        $('#card-proyectos').textContent = j.total_proyectos ?? '0';
+        $('#card-en-progreso').textContent = j.en_progreso ?? '0';
+        $('#card-done').textContent = j.done ?? '0';
+        $('#card-miembros').textContent = j.miembros_totales ?? '0';
+      } catch (e) { console.error(e); }
+    }
+
+    // ------------- Miembros -------------
+    let cacheMiembros = [];
+    function renderMiembros(filter='') {
+      const tbody = $('#tbody-miembros'); tbody.innerHTML = '';
+      const data = cacheMiembros.filter(m=>{
+        const q = filter.trim().toLowerCase();
+        if (!q) return true;
+        return (m.nombre||'').toLowerCase().includes(q) || (m.email||'').toLowerCase().includes(q) || (m.rol||'').toLowerCase().includes(q);
+      });
+      data.forEach(m => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-b';
+        tr.innerHTML = `
+          <td class="py-2 pr-3">${m.id}</td>
+          <td class="py-2 pr-3">${m.nombre}</td>
+          <td class="py-2 pr-3">${m.rol ?? ''}</td>
+          <td class="py-2 pr-3">${m.email}</td>
+          <td class="py-2 pr-3">
+            <button class="text-slate-700 hover:underline" data-view-miembro="${m.id}">Ver</button>
+            <span class="mx-1 text-slate-300">|</span>
+            <button class="text-blue-700 hover:underline" data-edit-miembro="${m.id}">Editar</button>
+            <span class="mx-1 text-slate-300">|</span>
+            <button class="text-rose-700 hover:underline" data-del-miembro="${m.id}">Eliminar</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+    async function listarMiembros() {
+      const r = await fetch('/miembros'); cacheMiembros = await r.json();
+      renderMiembros($('#search-miembros').value);
+    }
+    $('#search-miembros').addEventListener('input', e=> renderMiembros(e.target.value));
+    $('#btn-refrescar-miembros').addEventListener('click', async () => {
+      await listarMiembros(); await cargarResumen(); showToast('Miembros actualizados');
+    });
+    $('#form-miembro').addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const f = ev.target;
+      const payload = {
+        nombre: f.nombre.value.trim(),
+        rol: f.rol.value.trim() || null,
+        email: f.email.value.trim(),
+      };
+      $('#msg-miembro').classList.add('hidden');
+      try {
+        const r = await fetch('/miembros', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+        if (!r.ok) { const err = await r.json().catch(()=>({detail:'Error'})); throw new Error(err?.detail || 'No se pudo crear el miembro'); }
+        f.reset(); await listarMiembros(); await cargarResumen(); showToast('Miembro creado correctamente');
+      } catch (e) { $('#msg-miembro').textContent = e.message; $('#msg-miembro').classList.remove('hidden'); showToast(e.message, false); }
+    });
+
+    // acciones miembros (delegación)
+    document.addEventListener('click', async (e)=>{
+      const btnView = e.target.closest('[data-view-miembro]');
+      const btnEdit = e.target.closest('[data-edit-miembro]');
+      const btnDel  = e.target.closest('[data-del-miembro]');
+      if (btnView) {
+        const id = btnView.getAttribute('data-view-miembro');
+        const r = await fetch(`/miembros/${id}`); const m = await r.json();
+        showToast(`Miembro #${m.id}: ${m.nombre} · ${m.email}`);
+      }
+      if (btnEdit) {
+        const id = btnEdit.getAttribute('data-edit-miembro');
+        const r = await fetch(`/miembros/${id}`); const m = await r.json();
+        const f = $('#form-edit-miembro');
+        f.id.value = m.id; f.nombre.value = m.nombre; f.rol.value = m.rol || ''; f.email.value = m.email;
+        openModal('#modal-edit-miembro');
+      }
+      if (btnDel) {
+        const id = btnDel.getAttribute('data-del-miembro');
+        if (!confirm('¿Eliminar este miembro?')) return;
+        const r = await fetch(`/miembros/${id}`, { method: 'DELETE' });
+        if (!r.ok) { showToast('No se pudo eliminar', false); return; }
+        await listarMiembros(); await cargarResumen(); showToast('Miembro eliminado');
+      }
+    });
+    $('#form-edit-miembro').addEventListener('submit', async (ev)=>{
+      ev.preventDefault();
+      const f = ev.target;
+      const id = f.id.value;
+      const payload = {
+        nombre: f.nombre.value.trim(),
+        rol: f.rol.value.trim() || null,
+        email: f.email.value.trim(),
+      };
+      const r = await fetch(`/miembros/${id}`, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+      if (!r.ok) { const err = await r.json().catch(()=>({detail:'Error'})); showToast(err?.detail || 'No se pudo actualizar', false); return; }
+      closeModal('#modal-edit-miembro'); await listarMiembros(); showToast('Miembro actualizado');
+    });
+
+    // ------------- Proyectos -------------
+    let cacheProyectos = [];
+    function renderProyectos(filter='') {
+      const tbody = $('#tbody-proyectos'); tbody.innerHTML = '';
+      const data = cacheProyectos.filter(p=>{
+        const q = filter.trim().toLowerCase();
+        if (!q) return true;
+        return (p.nombre||'').toLowerCase().includes(q);
+      });
+      data.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-b';
+        tr.innerHTML = `
+          <td class="py-2 pr-3">${p.id}</td>
+          <td class="py-2 pr-3">${p.nombre}</td>
+          <td class="py-2 pr-3">${p.estado}</td>
+          <td class="py-2 pr-3">${fmt(p.start_date)}</td>
+          <td class="py-2 pr-3">${fmt(p.end_date)}</td>
+          <td class="py-2 pr-3">
+            <button class="text-slate-700 hover:underline" data-view-proyecto="${p.id}">Ver</button>
+            <span class="mx-1 text-slate-300">|</span>
+            <button class="text-blue-700 hover:underline" data-edit-proyecto="${p.id}">Editar</button>
+            <span class="mx-1 text-slate-300">|</span>
+            <button class="text-amber-700 hover:underline" data-assign="${p.id}">Asignar</button>
+            <span class="mx-1 text-slate-300">|</span>
+            <button class="text-rose-700 hover:underline" data-del-proyecto="${p.id}">Eliminar</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+    async function listarProyectos() {
+      const r = await fetch('/proyectos'); cacheProyectos = await r.json();
+      renderProyectos($('#search-proyectos').value);
+    }
+    $('#search-proyectos').addEventListener('input', e=> renderProyectos(e.target.value));
+    $('#btn-refrescar-proyectos').addEventListener('click', async () => {
+      await listarProyectos(); await cargarResumen(); showToast('Proyectos actualizados');
+    });
+    $('#form-proyecto').addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const f = ev.target;
+      const payload = {
+        nombre: f.nombre.value.trim(),
+        descripcion: f.descripcion.value.trim() || null,
+        estado: f.estado.value,
+        start_date: f.start_date.value || null,
+        end_date: f.end_date.value || null,
+      };
+      $('#msg-proyecto').classList.add('hidden');
+      try {
+        const r = await fetch('/proyectos', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+        if (!r.ok) { const err = await r.json().catch(()=>({detail:'Error'})); throw new Error(err?.detail || 'No se pudo crear el proyecto'); }
+        f.reset(); await listarProyectos(); await cargarResumen(); showToast('Proyecto creado correctamente');
+      } catch (e) {
+        $('#msg-proyecto').textContent = e.message; $('#msg-proyecto').classList.remove('hidden'); showToast(e.message, false);
+      }
+    });
+
+    // acciones proyectos (delegación)
+    document.addEventListener('click', async (e)=>{
+      const btnView = e.target.closest('[data-view-proyecto]');
+      const btnEdit = e.target.closest('[data-edit-proyecto]');
+      const btnDel  = e.target.closest('[data-del-proyecto]');
+      const btnAssign = e.target.closest('[data-assign]');
+
+      if (btnView) {
+        const id = btnView.getAttribute('data-view-proyecto');
+        const r = await fetch(`/proyectos/${id}`); const p = await r.json();
+        const miembros = (p.miembros || []).map(m=>m.nombre).join(', ') || '—';
+        showToast(`Proyecto #${p.id}: ${p.nombre} (${p.estado}) · Miembros: ${miembros}`);
+      }
+
+      if (btnEdit) {
+        const id = btnEdit.getAttribute('data-edit-proyecto');
+        const r = await fetch(`/proyectos/${id}`); const p = await r.json();
+        const f = $('#form-edit-proyecto');
+        f.id.value = p.id; f.nombre.value = p.nombre; f.descripcion.value = p.descripcion || '';
+        f.estado.value = p.estado || 'EN_PROGRESO';
+        f.start_date.value = p.start_date ? p.start_date.slice(0,10) : '';
+        f.end_date.value   = p.end_date ? p.end_date.slice(0,10) : '';
+        openModal('#modal-edit-proyecto');
+      }
+
+      if (btnDel) {
+        const id = btnDel.getAttribute('data-del-proyecto');
+        if (!confirm('¿Eliminar este proyecto?')) return;
+        const r = await fetch(`/proyectos/${id}`, { method: 'DELETE' });
+        if (!r.ok) { showToast('No se pudo eliminar', false); return; }
+        await listarProyectos(); await cargarResumen(); showToast('Proyecto eliminado');
+      }
+
+      if (btnAssign) {
+        const id = btnAssign.getAttribute('data-assign');
+        // Cargar miembros en el select
+        const r = await fetch('/miembros'); const ms = await r.json();
+        const sel = $('#form-assign select[name="miembro_id"]');
+        sel.innerHTML = ms.map(m=>`<option value="${m.id}">${m.nombre} · ${m.email}</option>`).join('') || '<option disabled>No hay miembros</option>';
+        $('#form-assign input[name="proyecto_id"]').value = id;
+        openModal('#modal-assign');
+      }
+    });
+    $('#form-edit-proyecto').addEventListener('submit', async (ev)=>{
+      ev.preventDefault();
+      const f = ev.target;
+      const id = f.id.value;
+      const payload = {
+        nombre: f.nombre.value.trim(),
+        descripcion: f.descripcion.value.trim() || null,
+        estado: f.estado.value,
+        start_date: f.start_date.value || null,
+        end_date: f.end_date.value || null,
+      };
+      const r = await fetch(`/proyectos/${id}`, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+      if (!r.ok) { const err = await r.json().catch(()=>({detail:'Error'})); showToast(err?.detail || 'No se pudo actualizar', false); return; }
+      closeModal('#modal-edit-proyecto'); await listarProyectos(); showToast('Proyecto actualizado');
+    });
+    $('#form-assign').addEventListener('submit', async (ev)=>{
+    ev.preventDefault();
+    const f = ev.target;
+    const proyectoId = f.proyecto_id.value;
+    const miembroId = parseInt(f.miembro_id.value, 10);
+    const r = await fetch(`/proyectos/${proyectoId}/asignar`, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ miembro_id: miembroId })
+    });
+    if (!r.ok) {
+        const err = await r.json().catch(()=>({detail:'Error'}));
+        showToast(err?.detail || 'No se pudo asignar', false);
+        return;
+    }
+    closeModal('#modal-assign');
+    await listarProyectos();
+    await cargarResumen();
+    showToast('Miembro asignado');
+    });
+        // ------------- Init -------------
+    (async function init(){
+      await Promise.all([cargarResumen(), listarMiembros(), listarProyectos()]);
+    })();
+  </script>
+</body>
+</html>

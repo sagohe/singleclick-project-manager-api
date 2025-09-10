@@ -10,7 +10,7 @@ Base.metadata.create_all(bind=engine)
 # Programa hecho especialmente para SingleClick v1.0
 app = FastAPI(title="SingleClick - API Gestion de grupos", version="1.0.0")
 
-app.mount("/web", StaticFiles(directory="app/frontend", html=True), name="frontend")
+app.mount("/web", StaticFiles(directory="frontend", html=True), name="frontend")
 
 @app.get("/health")
 def health():
