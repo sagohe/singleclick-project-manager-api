@@ -6,9 +6,10 @@ from .. import models, schemas
 
 router = APIRouter(prefix="/proyectos", tags=["Proyectos"])
 
+# Rutas de funciones del modelo proyecto
 
 @router.post("", response_model=schemas.SalidaProyecto, status_code=status.HTTP_201_CREATED)
-def create_project(payload: schemas.CrearProyecto, db: Session = Depends(get_db)):
+def crear_proyecto(payload: schemas.CrearProyecto, db: Session = Depends(get_db)):
     if db.query(models.Proyecto).filter(models.Proyecto.nombre == payload.nombre).first():
         raise HTTPException(status_code=400, detail="Ya existe un proyecto con ese nombre")
     obj = models.Proyecto(**payload.model_dump())
@@ -19,12 +20,12 @@ def create_project(payload: schemas.CrearProyecto, db: Session = Depends(get_db)
 
 
 @router.get("", response_model=List[schemas.SalidaProyecto])
-def list_projects(db: Session = Depends(get_db)):
+def lista_proyectos(db: Session = Depends(get_db)):
     return db.query(models.Proyecto).all()
 
 
 @router.get("/{proyecto_id}", response_model=schemas.SalidaProyecto)
-def get_project(proyecto_id: int, db: Session = Depends(get_db)):
+def get_proyecto(proyecto_id: int, db: Session = Depends(get_db)):
     obj = db.get(models.Proyecto, proyecto_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Proyecto no encontrado")
@@ -32,7 +33,7 @@ def get_project(proyecto_id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/{proyecto_id}", response_model=schemas.SalidaProyecto)
-def update_project(proyecto_id: int, payload: schemas.ActualizarProyecto, db: Session = Depends(get_db)):
+def actualizar_proyecto(proyecto_id: int, payload: schemas.ActualizarProyecto, db: Session = Depends(get_db)):
     obj = db.get(models.Proyecto, proyecto_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Proyecto no encontrado")
@@ -45,7 +46,7 @@ def update_project(proyecto_id: int, payload: schemas.ActualizarProyecto, db: Se
 
 
 @router.delete("/{proyecto_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_project(proyecto_id: int, db: Session = Depends(get_db)):
+def eliminar_proyecto(proyecto_id: int, db: Session = Depends(get_db)):
     obj = db.get(models.Proyecto, proyecto_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Proyecto no encontrado")

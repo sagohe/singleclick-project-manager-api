@@ -6,6 +6,7 @@ from .. import models, schemas
 
 router = APIRouter(prefix="/miembros", tags=["Miembros"])
 
+# Rutas de funciones del modelo miembros
 
 @router.post("", response_model=schemas.SalidaMiembro, status_code=status.HTTP_201_CREATED)
 def crear_miembro(payload: schemas.CrearMiembro, db: Session = Depends(get_db)):

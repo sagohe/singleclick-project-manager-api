@@ -5,16 +5,17 @@ from .. import models, schemas
 
 router = APIRouter(prefix="/reportes", tags=["Reportes"])
 
+# Ruta de  informacion general creada en la API
 
 @router.get("/informacion", response_model=schemas.Resumen)
-def summary(db: Session = Depends(get_db)):
-    total_projects = db.query(models.Proyecto).count()
-    in_progress = db.query(models.Proyecto).filter(models.Proyecto.status == models.EstadoProyecto.EN_PROGRESO).count()
-    done = db.query(models.Proyecto).filter(models.Proyecto.status == models.EstadoProyecto.DONE).count()
-    total_miembros = db.query(models.Miembro).count()
+def informacion(db: Session = Depends(get_db)):
+    total_proyectos = db.query(models.Proyecto).count()
+    en_progreso = db.query(models.Proyecto).filter(models.Proyecto.estado == models.EstadoProyecto.EN_PROGRESO).count()
+    done = db.query(models.Proyecto).filter(models.Proyecto.estado == models.EstadoProyecto.DONE).count()
+    miembros_totales = db.query(models.Miembro).count()
     return schemas.Resumen(
-        total_projects=total_projects,
-        in_progress=in_progress,
+        total_proyectos=total_proyectos,
+        en_progreso=en_progreso,
         done=done,
-        total_miembros=total_miembros,
+        miembros_totales=miembros_totales,
     )
