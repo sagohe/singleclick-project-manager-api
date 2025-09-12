@@ -29,6 +29,7 @@ class Proyecto(Base):
     start_date: Mapped[date | None] = mapped_column(Date)
     end_date: Mapped[date | None] = mapped_column(Date)
     
+    # secondary="tabla intermedia"
     # lazy="selectin" consulta adicional optimizada
     miembros: Mapped[list["Miembro"]] = relationship(
         "Miembro",

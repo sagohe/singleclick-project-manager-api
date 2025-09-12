@@ -20,15 +20,15 @@
   <header class="bg-white border-b border-slate-200">
     <div class="max-w-6xl mx-auto px-4 py-5 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-2xl bg-slate-900 text-white grid place-items-center font-bold">SC</div>
+        <div class="w-9 h-9 rounded-2xl bg-red-600 text-white grid place-items-center font-bold">SC</div>
         <div>
           <h1 class="text-xl font-semibold">SingleClick – Gestión de Grupos</h1>
           <p class="text-sm text-slate-500">Demo para reclutadores • FastAPI + Frontend limpio</p>
         </div>
       </div>
       <nav class="flex items-center gap-4">
-        <a href="/web" class="text-sm text-slate-600 hover:text-slate-900">Inicio</a>
-        <a href="/docs" class="text-sm text-slate-500 hover:text-slate-700 underline">API (/docs)</a>
+        <a href="/web" class="text-sm text-slate-600 hover:text-red-700">Inicio</a>
+        <a href="/docs" class="text-sm text-slate-500 hover:text-red-700 underline decoration-red-500">API (/docs)</a>
       </nav>
     </div>
   </header>
@@ -38,19 +38,19 @@
     <section>
       <h2 class="text-lg font-medium mb-3">Resumen</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="cards-resumen">
-        <div class="rounded-2xl border bg-white p-5">
+        <div class="rounded-2xl border bg-white p-5 border-t-4 border-t-red-500">
           <p class="text-sm text-slate-500">Proyectos</p>
           <p class="text-3xl font-semibold" id="card-proyectos">—</p>
         </div>
-        <div class="rounded-2xl border bg-white p-5">
+        <div class="rounded-2xl border bg-white p-5 border-t-4 border-t-red-500">
           <p class="text-sm text-slate-500">En progreso</p>
           <p class="text-3xl font-semibold" id="card-en-progreso">—</p>
         </div>
-        <div class="rounded-2xl border bg-white p-5">
+        <div class="rounded-2xl border bg-white p-5 border-t-4 border-t-red-500">
           <p class="text-sm text-slate-500">Finalizados</p>
           <p class="text-3xl font-semibold" id="card-done">—</p>
         </div>
-        <div class="rounded-2xl border bg-white p-5">
+        <div class="rounded-2xl border bg-white p-5 border-t-4 border-t-red-500">
           <p class="text-sm text-slate-500">Miembros</p>
           <p class="text-3xl font-semibold" id="card-miembros">—</p>
         </div>
@@ -60,31 +60,31 @@
     <!-- Tabs -->
     <section class="space-y-4">
       <div class="flex items-center gap-2">
-        <button id="tab-miembros" class="px-4 py-2 rounded-xl bg-slate-900 text-white">Miembros</button>
+        <button id="tab-miembros" class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white">Miembros</button>
         <button id="tab-proyectos" class="px-4 py-2 rounded-xl hover:bg-slate-200">Proyectos</button>
       </div>
 
       <!-- Panel Miembros -->
       <div id="panel-miembros" class="space-y-6">
         <!-- Crear miembro -->
-        <div class="rounded-2xl border bg-white p-5">
+        <div class="rounded-2xl border bg-white p-5 border-t-4 border-t-red-500">
           <h3 class="font-semibold mb-3">Crear miembro</h3>
           <form id="form-miembro" class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <input class="border rounded-xl px-3 py-2" type="text" name="nombre" placeholder="Nombre" required minlength="2" />
-            <input class="border rounded-xl px-3 py-2" type="text" name="rol" placeholder="Rol (opcional)" />
-            <input class="border rounded-xl px-3 py-2" type="email" name="email" placeholder="Email" required />
-            <button class="rounded-xl bg-slate-900 text-white px-4 py-2">Guardar</button>
+            <input class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" type="text" name="nombre" placeholder="Nombre" required minlength="2" />
+            <input class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" type="text" name="rol" placeholder="Rol (opcional)" />
+            <input class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" type="email" name="email" placeholder="Email" required />
+            <button class="rounded-xl bg-red-600 hover:bg-red-700 text-white px-4 py-2">Guardar</button>
           </form>
           <p id="msg-miembro" class="text-sm text-red-600 mt-2 hidden"></p>
         </div>
 
         <!-- Lista + Buscador -->
-        <div class="rounded-2xl border bg-white p-5">
+        <div class="rounded-2xl border bg-white p-5 border-t-4 border-t-red-500">
           <div class="flex items-center justify-between mb-3 gap-3">
             <h3 class="font-semibold">Miembros</h3>
             <div class="flex items-center gap-2">
-              <input id="search-miembros" class="border rounded-lg px-3 py-1.5 text-sm" placeholder="Buscar por nombre, email..."/>
-              <button id="btn-refrescar-miembros" class="text-sm px-3 py-1.5 rounded-lg border hover:bg-slate-100">Refrescar</button>
+              <input id="search-miembros" class="border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/40" placeholder="Buscar por nombre, email..."/>
+              <button id="btn-refrescar-miembros" class="text-sm px-3 py-1.5 rounded-lg border hover:bg-red-50 hover:border-red-200">Refrescar</button>
             </div>
           </div>
           <div class="overflow-x-auto">
@@ -107,29 +107,29 @@
       <!-- Panel Proyectos -->
       <div id="panel-proyectos" class="space-y-6 hidden">
         <!-- Crear proyecto -->
-        <div class="rounded-2xl border bg-white p-5">
+        <div class="rounded-2xl border bg-white p-5 border-t-4 border-t-red-500">
           <h3 class="font-semibold mb-3">Crear proyecto</h3>
           <form id="form-proyecto" class="grid grid-cols-1 md:grid-cols-6 gap-4">
-            <input class="border rounded-xl px-3 py-2 md:col-span-2" type="text" name="nombre" placeholder="Nombre" required minlength="2" />
-            <input class="border rounded-xl px-3 py-2 md:col-span-2" type="text" name="descripcion" placeholder="Descripción (opcional)" />
-            <select class="border rounded-xl px-3 py-2" name="estado">
+            <input class="border rounded-xl px-3 py-2 md:col-span-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" type="text" name="nombre" placeholder="Nombre" required minlength="2" />
+            <input class="border rounded-xl px-3 py-2 md:col-span-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" type="text" name="descripcion" placeholder="Descripción (opcional)" />
+            <select class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" name="estado">
               <option value="EN_PROGRESO">EN_PROGRESO</option>
               <option value="DONE">DONE</option>
             </select>
-            <input class="border rounded-xl px-3 py-2" type="date" name="start_date" />
-            <input class="border rounded-xl px-3 py-2" type="date" name="end_date" />
-            <button class="rounded-xl bg-slate-900 text-white px-4 py-2 md:col-span-1">Guardar</button>
+            <input class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" type="date" name="start_date" />
+            <input class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" type="date" name="end_date" />
+            <button class="rounded-xl bg-red-600 hover:bg-red-700 text-white px-4 py-2 md:col-span-1">Guardar</button>
           </form>
           <p id="msg-proyecto" class="text-sm text-red-600 mt-2 hidden"></p>
         </div>
 
         <!-- Lista + Buscador -->
-        <div class="rounded-2xl border bg-white p-5">
+        <div class="rounded-2xl border bg-white p-5 border-t-4 border-t-red-500">
           <div class="flex items-center justify-between mb-3 gap-3">
             <h3 class="font-semibold">Proyectos</h3>
             <div class="flex items-center gap-2">
-              <input id="search-proyectos" class="border rounded-lg px-3 py-1.5 text-sm" placeholder="Buscar por nombre..."/>
-              <button id="btn-refrescar-proyectos" class="text-sm px-3 py-1.5 rounded-lg border hover:bg-slate-100">Refrescar</button>
+              <input id="search-proyectos" class="border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/40" placeholder="Buscar por nombre..."/>
+              <button id="btn-refrescar-proyectos" class="text-sm px-3 py-1.5 rounded-lg border hover:bg-red-50 hover:border-red-200">Refrescar</button>
             </div>
           </div>
           <div class="overflow-x-auto">
@@ -159,12 +159,12 @@
       <h3 class="font-semibold mb-4">Editar miembro</h3>
       <form id="form-edit-miembro" class="space-y-3">
         <input type="hidden" name="id" />
-        <input class="border rounded-xl w-full px-3 py-2" name="nombre" placeholder="Nombre" required minlength="2"/>
-        <input class="border rounded-xl w-full px-3 py-2" name="rol" placeholder="Rol (opcional)"/>
-        <input class="border rounded-xl w-full px-3 py-2" name="email" placeholder="Email" type="email" required/>
+        <input class="border rounded-xl w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" name="nombre" placeholder="Nombre" required minlength="2"/>
+        <input class="border rounded-xl w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" name="rol" placeholder="Rol (opcional)"/>
+        <input class="border rounded-xl w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" name="email" placeholder="Email" type="email" required/>
         <div class="flex justify-end gap-2 pt-2">
-          <button type="button" data-close="#modal-edit-miembro" class="px-4 py-2 rounded-xl border">Cancelar</button>
-          <button class="px-4 py-2 rounded-xl bg-slate-900 text-white">Guardar</button>
+          <button type="button" data-close="#modal-edit-miembro" class="px-4 py-2 rounded-xl border hover:bg-red-50 hover:border-red-200">Cancelar</button>
+          <button class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white">Guardar</button>
         </div>
       </form>
     </div>
@@ -176,17 +176,17 @@
       <h3 class="font-semibold mb-4">Editar proyecto</h3>
       <form id="form-edit-proyecto" class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <input type="hidden" name="id" />
-        <input class="border rounded-xl px-3 py-2" name="nombre" placeholder="Nombre" required minlength="2"/>
-        <input class="border rounded-xl px-3 py-2" name="descripcion" placeholder="Descripción (opcional)"/>
-        <select class="border rounded-xl px-3 py-2" name="estado">
+        <input class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" name="nombre" placeholder="Nombre" required minlength="2"/>
+        <input class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" name="descripcion" placeholder="Descripción (opcional)"/>
+        <select class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" name="estado">
           <option value="EN_PROGRESO">EN_PROGRESO</option>
           <option value="DONE">DONE</option>
         </select>
-        <input class="border rounded-xl px-3 py-2" type="date" name="start_date"/>
-        <input class="border rounded-xl px-3 py-2" type="date" name="end_date"/>
+        <input class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" type="date" name="start_date"/>
+        <input class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" type="date" name="end_date"/>
         <div class="md:col-span-2 flex justify-end gap-2 pt-2">
-          <button type="button" data-close="#modal-edit-proyecto" class="px-4 py-2 rounded-xl border">Cancelar</button>
-          <button class="px-4 py-2 rounded-xl bg-slate-900 text-white">Guardar</button>
+          <button type="button" data-close="#modal-edit-proyecto" class="px-4 py-2 rounded-xl border hover:bg-red-50 hover:border-red-200">Cancelar</button>
+          <button class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white">Guardar</button>
         </div>
       </form>
     </div>
@@ -198,10 +198,10 @@
       <h3 class="font-semibold mb-4">Asignar miembro al proyecto</h3>
       <form id="form-assign" class="space-y-3">
         <input type="hidden" name="proyecto_id"/>
-        <select name="miembro_id" class="border rounded-xl w-full px-3 py-2"></select>
+        <select name="miembro_id" class="border rounded-xl w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40"></select>
         <div class="flex justify-end gap-2 pt-2">
-          <button type="button" data-close="#modal-assign" class="px-4 py-2 rounded-xl border">Cancelar</button>
-          <button class="px-4 py-2 rounded-xl bg-slate-900 text-white">Asignar</button>
+          <button type="button" data-close="#modal-assign" class="px-4 py-2 rounded-xl border hover:bg-red-50 hover:border-red-200">Cancelar</button>
+          <button class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white">Asignar</button>
         </div>
       </form>
     </div>
@@ -233,13 +233,13 @@
 
     // ------------- Tabs -------------
     $('#tab-miembros').addEventListener('click', () => {
-      $('#tab-miembros').className = 'px-4 py-2 rounded-xl bg-slate-900 text-white';
+      $('#tab-miembros').className = 'px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white';
       $('#tab-proyectos').className = 'px-4 py-2 rounded-xl hover:bg-slate-200';
       $('#panel-miembros').classList.remove('hidden');
       $('#panel-proyectos').classList.add('hidden');
     });
     $('#tab-proyectos').addEventListener('click', () => {
-      $('#tab-proyectos').className = 'px-4 py-2 rounded-xl bg-slate-900 text-white';
+      $('#tab-proyectos').className = 'px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white';
       $('#tab-miembros').className = 'px-4 py-2 rounded-xl hover:bg-slate-200';
       $('#panel-proyectos').classList.remove('hidden');
       $('#panel-miembros').classList.add('hidden');
@@ -277,7 +277,7 @@
           <td class="py-2 pr-3">
             <button class="text-slate-700 hover:underline" data-view-miembro="${m.id}">Ver</button>
             <span class="mx-1 text-slate-300">|</span>
-            <button class="text-blue-700 hover:underline" data-edit-miembro="${m.id}">Editar</button>
+            <button class="text-red-700 hover:underline" data-edit-miembro="${m.id}">Editar</button>
             <span class="mx-1 text-slate-300">|</span>
             <button class="text-rose-700 hover:underline" data-del-miembro="${m.id}">Eliminar</button>
           </td>
@@ -369,9 +369,9 @@
           <td class="py-2 pr-3">
             <button class="text-slate-700 hover:underline" data-view-proyecto="${p.id}">Ver</button>
             <span class="mx-1 text-slate-300">|</span>
-            <button class="text-blue-700 hover:underline" data-edit-proyecto="${p.id}">Editar</button>
+            <button class="text-red-700 hover:underline" data-edit-proyecto="${p.id}">Editar</button>
             <span class="mx-1 text-slate-300">|</span>
-            <button class="text-amber-700 hover:underline" data-assign="${p.id}">Asignar</button>
+            <button class="text-red-700 hover:underline" data-assign="${p.id}">Asignar</button>
             <span class="mx-1 text-slate-300">|</span>
             <button class="text-rose-700 hover:underline" data-del-proyecto="${p.id}">Eliminar</button>
           </td>
@@ -466,26 +466,24 @@
       closeModal('#modal-edit-proyecto'); await listarProyectos(); showToast('Proyecto actualizado');
     });
     $('#form-assign').addEventListener('submit', async (ev)=>{
-    ev.preventDefault();
-    const f = ev.target;
-    const proyectoId = f.proyecto_id.value;
-    const miembroId = parseInt(f.miembro_id.value, 10);
-    const r = await fetch(`/proyectos/${proyectoId}/asignar`, {
+      ev.preventDefault();
+      const f = ev.target;
+      const proyectoId = f.proyecto_id.value;
+      const miembroId = parseInt(f.miembro_id.value, 10);
+      const r = await fetch(`/proyectos/${proyectoId}/asignar`, {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ miembro_id: miembroId })
-    });
-    if (!r.ok) {
+      });
+      if (!r.ok) {
         const err = await r.json().catch(()=>({detail:'Error'}));
         showToast(err?.detail || 'No se pudo asignar', false);
         return;
-    }
-    closeModal('#modal-assign');
-    await listarProyectos();
-    await cargarResumen();
-    showToast('Miembro asignado');
+      }
+      closeModal('#modal-assign'); await listarProyectos(); await cargarResumen(); showToast('Miembro asignado');
     });
-        // ------------- Init -------------
+
+    // ------------- Init -------------
     (async function init(){
       await Promise.all([cargarResumen(), listarMiembros(), listarProyectos()]);
     })();
