@@ -3,32 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SingleClick – Gestión de Grupos</title>
+  <title>SingleClick – Gestión de Grupos (Dark)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <meta name="theme-color" content="#0f172a" />
   <style>
+    /* Forzar modo oscuro: aplicamos estilos cuando .dark-mode existe.
+       Usamos clases explícitas en el HTML, pero esto evita snags por navegadores. */
     .toast { animation: fade 3.5s ease forwards; }
     @keyframes fade { 0%{opacity:0;transform:translateY(-6px)}
       10%{opacity:1;transform:translateY(0)}
       90%{opacity:1}
       100%{opacity:0;transform:translateY(-6px)} }
-    .modal { background: rgba(0,0,0,.38); }
+    .modal { background: rgba(0,0,0,.6); }
+    /* pequeña transición para modales y tarjetas */
+    .smooth { transition: background-color .15s, color .15s, border-color .15s; }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800">
-  <!-- Header -->
-  <header class="bg-white border-b border-slate-200">
+<body class="dark-mode">
+  <script>
+    // Forzar clase global dark-mode en documentElement (asegura modo oscuro en todos los navegadores)
+    document.documentElement.classList.add('dark-mode');
+    // También podemos exponer una variable global si se necesita toggling futuro.
+    window.__FORCE_DARK = true;
+  </script>
+
+  <!-- Usamos colores oscuros de Tailwind explícitos en elementos -->
+  <header class="bg-slate-900 border-b border-slate-800 smooth">
     <div class="max-w-6xl mx-auto px-4 py-5 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="w-9 h-9 rounded-2xl bg-red-600 text-white grid place-items-center font-bold">SC</div>
         <div>
-          <h1 class="text-xl font-semibold">SingleClick – Gestión de Grupos</h1>
-          <p class="text-sm text-slate-500">Demo para reclutadores • FastAPI + Frontend limpio</p>
+          <h1 class="text-xl font-semibold text-slate-100">SingleClick – Gestión de Grupos</h1>
+          <p class="text-sm text-slate-400">Demo para reclutadores • FastAPI + Frontend oscuro</p>
         </div>
       </div>
       <nav class="flex items-center gap-4">
-        <a href="/web" class="text-sm text-slate-600 hover:text-red-700">Inicio</a>
-        <a href="/docs" class="text-sm text-slate-500 hover:text-red-700 underline decoration-red-500">API (/docs)</a>
+        <a href="/web" class="text-sm text-slate-300 hover:text-red-400">Inicio</a>
+        <a href="/docs" class="text-sm text-slate-400 hover:text-red-400 underline decoration-red-500">API (/docs)</a>
       </nav>
     </div>
   </header>
@@ -36,23 +48,23 @@
   <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
     <!-- Resumen -->
     <section>
-      <h2 class="text-lg font-medium mb-3">Resumen</h2>
+      <h2 class="text-lg font-medium mb-3 text-slate-100">Resumen</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="cards-resumen">
-        <div class="rounded-2xl border bg-white p-5 border-t-4 border-t-red-500">
-          <p class="text-sm text-slate-500">Proyectos</p>
-          <p class="text-3xl font-semibold" id="card-proyectos">—</p>
+        <div class="rounded-2xl border bg-slate-800 p-5 border-t-4 border-t-red-600 smooth">
+          <p class="text-sm text-slate-400">Proyectos</p>
+          <p class="text-3xl font-semibold text-slate-100" id="card-proyectos">—</p>
         </div>
-        <div class="rounded-2xl border bg-white p-5 border-t-4 border-t-red-500">
-          <p class="text-sm text-slate-500">En progreso</p>
-          <p class="text-3xl font-semibold" id="card-en-progreso">—</p>
+        <div class="rounded-2xl border bg-slate-800 p-5 border-t-4 border-t-red-600 smooth">
+          <p class="text-sm text-slate-400">En progreso</p>
+          <p class="text-3xl font-semibold text-slate-100" id="card-en-progreso">—</p>
         </div>
-        <div class="rounded-2xl border bg-white p-5 border-t-4 border-t-red-500">
-          <p class="text-sm text-slate-500">Finalizados</p>
-          <p class="text-3xl font-semibold" id="card-done">—</p>
+        <div class="rounded-2xl border bg-slate-800 p-5 border-t-4 border-t-red-600 smooth">
+          <p class="text-sm text-slate-400">Finalizados</p>
+          <p class="text-3xl font-semibold text-slate-100" id="card-done">—</p>
         </div>
-        <div class="rounded-2xl border bg-white p-5 border-t-4 border-t-red-500">
-          <p class="text-sm text-slate-500">Miembros</p>
-          <p class="text-3xl font-semibold" id="card-miembros">—</p>
+        <div class="rounded-2xl border bg-slate-800 p-5 border-t-4 border-t-red-600 smooth">
+          <p class="text-sm text-slate-400">Miembros</p>
+          <p class="text-3xl font-semibold text-slate-100" id="card-miembros">—</p>
         </div>
       </div>
     </section>
@@ -61,41 +73,41 @@
     <section class="space-y-4">
       <div class="flex items-center gap-2">
         <button id="tab-miembros" class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white">Miembros</button>
-        <button id="tab-proyectos" class="px-4 py-2 rounded-xl hover:bg-slate-200">Proyectos</button>
+        <button id="tab-proyectos" class="px-4 py-2 rounded-xl bg-transparent hover:bg-slate-800 text-slate-300">Proyectos</button>
       </div>
 
       <!-- Panel Miembros -->
       <div id="panel-miembros" class="space-y-6">
         <!-- Crear miembro -->
-        <div class="rounded-2xl border bg-white p-5 border-t-4 border-t-red-500">
-          <h3 class="font-semibold mb-3">Crear miembro</h3>
+        <div class="rounded-2xl border bg-slate-800 p-5 border-t-4 border-t-red-600 smooth">
+          <h3 class="font-semibold mb-3 text-slate-100">Crear miembro</h3>
           <form id="form-miembro" class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <input class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" type="text" name="nombre" placeholder="Nombre" required minlength="2" />
-            <input class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" type="text" name="rol" placeholder="Rol (opcional)" />
-            <input class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" type="email" name="email" placeholder="Email" required />
+            <input class="border rounded-xl px-3 py-2 bg-slate-900 text-slate-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 smooth" type="text" name="nombre" placeholder="Nombre" required minlength="2" />
+            <input class="border rounded-xl px-3 py-2 bg-slate-900 text-slate-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 smooth" type="text" name="rol" placeholder="Rol (opcional)" />
+            <input class="border rounded-xl px-3 py-2 bg-slate-900 text-slate-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 smooth" type="email" name="email" placeholder="Email" required />
             <button class="rounded-xl bg-red-600 hover:bg-red-700 text-white px-4 py-2">Guardar</button>
           </form>
-          <p id="msg-miembro" class="text-sm text-red-600 mt-2 hidden"></p>
+          <p id="msg-miembro" class="text-sm text-red-400 mt-2 hidden"></p>
         </div>
 
         <!-- Lista + Buscador -->
-        <div class="rounded-2xl border bg-white p-5 border-t-4 border-t-red-500">
+        <div class="rounded-2xl border bg-slate-800 p-5 border-t-4 border-t-red-600 smooth">
           <div class="flex items-center justify-between mb-3 gap-3">
-            <h3 class="font-semibold">Miembros</h3>
+            <h3 class="font-semibold text-slate-100">Miembros</h3>
             <div class="flex items-center gap-2">
-              <input id="search-miembros" class="border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/40" placeholder="Buscar por nombre, email..."/>
-              <button id="btn-refrescar-miembros" class="text-sm px-3 py-1.5 rounded-lg border hover:bg-red-50 hover:border-red-200">Refrescar</button>
+              <input id="search-miembros" class="border rounded-lg px-3 py-1.5 text-sm bg-slate-900 text-slate-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 smooth" placeholder="Buscar por nombre, email..."/>
+              <button id="btn-refrescar-miembros" class="text-sm px-3 py-1.5 rounded-lg border border-slate-700 hover:bg-red-700/10 text-slate-200">Refrescar</button>
             </div>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-sm">
               <thead>
-                <tr class="text-left border-b">
-                  <th class="py-2 pr-3">ID</th>
-                  <th class="py-2 pr-3">Nombre</th>
-                  <th class="py-2 pr-3">Rol</th>
-                  <th class="py-2 pr-3">Email</th>
-                  <th class="py-2 pr-3">Acciones</th>
+                <tr class="text-left border-b border-slate-700">
+                  <th class="py-2 pr-3 text-slate-300">ID</th>
+                  <th class="py-2 pr-3 text-slate-300">Nombre</th>
+                  <th class="py-2 pr-3 text-slate-300">Rol</th>
+                  <th class="py-2 pr-3 text-slate-300">Email</th>
+                  <th class="py-2 pr-3 text-slate-300">Acciones</th>
                 </tr>
               </thead>
               <tbody id="tbody-miembros"></tbody>
@@ -107,41 +119,41 @@
       <!-- Panel Proyectos -->
       <div id="panel-proyectos" class="space-y-6 hidden">
         <!-- Crear proyecto -->
-        <div class="rounded-2xl border bg-white p-5 border-t-4 border-t-red-500">
-          <h3 class="font-semibold mb-3">Crear proyecto</h3>
+        <div class="rounded-2xl border bg-slate-800 p-5 border-t-4 border-t-red-600 smooth">
+          <h3 class="font-semibold mb-3 text-slate-100">Crear proyecto</h3>
           <form id="form-proyecto" class="grid grid-cols-1 md:grid-cols-6 gap-4">
-            <input class="border rounded-xl px-3 py-2 md:col-span-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" type="text" name="nombre" placeholder="Nombre" required minlength="2" />
-            <input class="border rounded-xl px-3 py-2 md:col-span-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" type="text" name="descripcion" placeholder="Descripción (opcional)" />
-            <select class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" name="estado">
-              <option value="EN_PROGRESO">EN_PROGRESO</option>
-              <option value="DONE">DONE</option>
+            <input class="border rounded-xl px-3 py-2 md:col-span-2 bg-slate-900 text-slate-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 smooth" type="text" name="nombre" placeholder="Nombre" required minlength="2" />
+            <input class="border rounded-xl px-3 py-2 md:col-span-2 bg-slate-900 text-slate-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 smooth" type="text" name="descripcion" placeholder="Descripción (opcional)" />
+            <select class="border rounded-xl px-3 py-2 bg-slate-900 text-slate-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 smooth" name="estado">
+              <option value="EN_PROGRESO" class="bg-slate-900 text-slate-100">EN_PROGRESO</option>
+              <option value="DONE" class="bg-slate-900 text-slate-100">DONE</option>
             </select>
-            <input class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" type="date" name="start_date" />
-            <input class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" type="date" name="end_date" />
+            <input class="border rounded-xl px-3 py-2 bg-slate-900 text-slate-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 smooth" type="date" name="start_date" />
+            <input class="border rounded-xl px-3 py-2 bg-slate-900 text-slate-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 smooth" type="date" name="end_date" />
             <button class="rounded-xl bg-red-600 hover:bg-red-700 text-white px-4 py-2 md:col-span-1">Guardar</button>
           </form>
-          <p id="msg-proyecto" class="text-sm text-red-600 mt-2 hidden"></p>
+          <p id="msg-proyecto" class="text-sm text-red-400 mt-2 hidden"></p>
         </div>
 
         <!-- Lista + Buscador -->
-        <div class="rounded-2xl border bg-white p-5 border-t-4 border-t-red-500">
+        <div class="rounded-2xl border bg-slate-800 p-5 border-t-4 border-t-red-600 smooth">
           <div class="flex items-center justify-between mb-3 gap-3">
-            <h3 class="font-semibold">Proyectos</h3>
+            <h3 class="font-semibold text-slate-100">Proyectos</h3>
             <div class="flex items-center gap-2">
-              <input id="search-proyectos" class="border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/40" placeholder="Buscar por nombre..."/>
-              <button id="btn-refrescar-proyectos" class="text-sm px-3 py-1.5 rounded-lg border hover:bg-red-50 hover:border-red-200">Refrescar</button>
+              <input id="search-proyectos" class="border rounded-lg px-3 py-1.5 text-sm bg-slate-900 text-slate-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 smooth" placeholder="Buscar por nombre..."/>
+              <button id="btn-refrescar-proyectos" class="text-sm px-3 py-1.5 rounded-lg border border-slate-700 hover:bg-red-700/10 text-slate-200">Refrescar</button>
             </div>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-sm">
               <thead>
-                <tr class="text-left border-b">
-                  <th class="py-2 pr-3">ID</th>
-                  <th class="py-2 pr-3">Nombre</th>
-                  <th class="py-2 pr-3">Estado</th>
-                  <th class="py-2 pr-3">Inicio</th>
-                  <th class="py-2 pr-3">Fin</th>
-                  <th class="py-2 pr-3">Acciones</th>
+                <tr class="text-left border-b border-slate-700">
+                  <th class="py-2 pr-3 text-slate-300">ID</th>
+                  <th class="py-2 pr-3 text-slate-300">Nombre</th>
+                  <th class="py-2 pr-3 text-slate-300">Estado</th>
+                  <th class="py-2 pr-3 text-slate-300">Inicio</th>
+                  <th class="py-2 pr-3 text-slate-300">Fin</th>
+                  <th class="py-2 pr-3 text-slate-300">Acciones</th>
                 </tr>
               </thead>
               <tbody id="tbody-proyectos"></tbody>
@@ -152,62 +164,59 @@
     </section>
   </main>
 
-  <!-- Modales -->
-  <!-- Editar Miembro -->
+  <!-- Modales (fondo oscuro, tarjetas oscuras) -->
   <div id="modal-edit-miembro" class="modal fixed inset-0 hidden place-items-center">
-    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
-      <h3 class="font-semibold mb-4">Editar miembro</h3>
+    <div class="bg-slate-900 rounded-2xl shadow-xl w-full max-w-md p-6">
+      <h3 class="font-semibold mb-4 text-slate-100">Editar miembro</h3>
       <form id="form-edit-miembro" class="space-y-3">
         <input type="hidden" name="id" />
-        <input class="border rounded-xl w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" name="nombre" placeholder="Nombre" required minlength="2"/>
-        <input class="border rounded-xl w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" name="rol" placeholder="Rol (opcional)"/>
-        <input class="border rounded-xl w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" name="email" placeholder="Email" type="email" required/>
+        <input class="border rounded-xl w-full px-3 py-2 bg-slate-800 text-slate-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 smooth" name="nombre" placeholder="Nombre" required minlength="2"/>
+        <input class="border rounded-xl w-full px-3 py-2 bg-slate-800 text-slate-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 smooth" name="rol" placeholder="Rol (opcional)"/>
+        <input class="border rounded-xl w-full px-3 py-2 bg-slate-800 text-slate-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 smooth" name="email" placeholder="Email" type="email" required/>
         <div class="flex justify-end gap-2 pt-2">
-          <button type="button" data-close="#modal-edit-miembro" class="px-4 py-2 rounded-xl border hover:bg-red-50 hover:border-red-200">Cancelar</button>
+          <button type="button" data-close="#modal-edit-miembro" class="px-4 py-2 rounded-xl border border-slate-700 hover:bg-red-700/10 text-slate-200">Cancelar</button>
           <button class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white">Guardar</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Editar Proyecto -->
   <div id="modal-edit-proyecto" class="modal fixed inset-0 hidden place-items-center">
-    <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6">
-      <h3 class="font-semibold mb-4">Editar proyecto</h3>
+    <div class="bg-slate-900 rounded-2xl shadow-xl w-full max-w-lg p-6">
+      <h3 class="font-semibold mb-4 text-slate-100">Editar proyecto</h3>
       <form id="form-edit-proyecto" class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <input type="hidden" name="id" />
-        <input class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" name="nombre" placeholder="Nombre" required minlength="2"/>
-        <input class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" name="descripcion" placeholder="Descripción (opcional)"/>
-        <select class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" name="estado">
-          <option value="EN_PROGRESO">EN_PROGRESO</option>
-          <option value="DONE">DONE</option>
+        <input class="border rounded-xl px-3 py-2 bg-slate-800 text-slate-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 smooth" name="nombre" placeholder="Nombre" required minlength="2"/>
+        <input class="border rounded-xl px-3 py-2 bg-slate-800 text-slate-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 smooth" name="descripcion" placeholder="Descripción (opcional)"/>
+        <select class="border rounded-xl px-3 py-2 bg-slate-800 text-slate-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 smooth" name="estado">
+          <option value="EN_PROGRESO" class="bg-slate-800 text-slate-100">EN_PROGRESO</option>
+          <option value="DONE" class="bg-slate-800 text-slate-100">DONE</option>
         </select>
-        <input class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" type="date" name="start_date"/>
-        <input class="border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40" type="date" name="end_date"/>
+        <input class="border rounded-xl px-3 py-2 bg-slate-800 text-slate-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 smooth" type="date" name="start_date"/>
+        <input class="border rounded-xl px-3 py-2 bg-slate-800 text-slate-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 smooth" type="date" name="end_date"/>
         <div class="md:col-span-2 flex justify-end gap-2 pt-2">
-          <button type="button" data-close="#modal-edit-proyecto" class="px-4 py-2 rounded-xl border hover:bg-red-50 hover:border-red-200">Cancelar</button>
+          <button type="button" data-close="#modal-edit-proyecto" class="px-4 py-2 rounded-xl border border-slate-700 hover:bg-red-700/10 text-slate-200">Cancelar</button>
           <button class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white">Guardar</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Asignar Miembro a Proyecto -->
   <div id="modal-assign" class="modal fixed inset-0 hidden place-items-center">
-    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
-      <h3 class="font-semibold mb-4">Asignar miembro al proyecto</h3>
+    <div class="bg-slate-900 rounded-2xl shadow-xl w-full max-w-md p-6">
+      <h3 class="font-semibold mb-4 text-slate-100">Asignar miembro al proyecto</h3>
       <form id="form-assign" class="space-y-3">
         <input type="hidden" name="proyecto_id"/>
-        <select name="miembro_id" class="border rounded-xl w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500/40"></select>
+        <select name="miembro_id" class="border rounded-xl w-full px-3 py-2 bg-slate-800 text-slate-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 smooth"></select>
         <div class="flex justify-end gap-2 pt-2">
-          <button type="button" data-close="#modal-assign" class="px-4 py-2 rounded-xl border hover:bg-red-50 hover:border-red-200">Cancelar</button>
+          <button type="button" data-close="#modal-assign" class="px-4 py-2 rounded-xl border border-slate-700 hover:bg-red-700/10 text-slate-200">Cancelar</button>
           <button class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white">Asignar</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Toaster -->
+  <!-- Toaster (error rojo, éxito verde — fondo claro sobre oscuro) -->
   <div id="toasts" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
   <script>
@@ -216,7 +225,8 @@
     const $$ = (sel) => Array.from(document.querySelectorAll(sel));
     const showToast = (msg, ok=true) => {
       const wrap = document.createElement('div');
-      wrap.className = `toast px-4 py-3 rounded-xl shadow border ${ok ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800'}`;
+      wrap.className = `toast px-4 py-3 rounded-xl shadow border ${ok ? 'bg-green-800/20 border-green-600 text-green-200' : 'bg-red-900/30 border-red-600 text-red-300'}`;
+      wrap.style.backdropFilter = 'blur(6px)';
       wrap.textContent = msg;
       $('#toasts').appendChild(wrap);
       setTimeout(() => wrap.remove(), 3600);
@@ -234,13 +244,13 @@
     // ------------- Tabs -------------
     $('#tab-miembros').addEventListener('click', () => {
       $('#tab-miembros').className = 'px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white';
-      $('#tab-proyectos').className = 'px-4 py-2 rounded-xl hover:bg-slate-200';
+      $('#tab-proyectos').className = 'px-4 py-2 rounded-xl bg-transparent hover:bg-slate-800 text-slate-300';
       $('#panel-miembros').classList.remove('hidden');
       $('#panel-proyectos').classList.add('hidden');
     });
     $('#tab-proyectos').addEventListener('click', () => {
       $('#tab-proyectos').className = 'px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white';
-      $('#tab-miembros').className = 'px-4 py-2 rounded-xl hover:bg-slate-200';
+      $('#tab-miembros').className = 'px-4 py-2 rounded-xl bg-transparent hover:bg-slate-800 text-slate-300';
       $('#panel-proyectos').classList.remove('hidden');
       $('#panel-miembros').classList.add('hidden');
     });
@@ -268,18 +278,18 @@
       });
       data.forEach(m => {
         const tr = document.createElement('tr');
-        tr.className = 'border-b';
+        tr.className = 'border-b border-slate-700';
         tr.innerHTML = `
-          <td class="py-2 pr-3">${m.id}</td>
-          <td class="py-2 pr-3">${m.nombre}</td>
-          <td class="py-2 pr-3">${m.rol ?? ''}</td>
-          <td class="py-2 pr-3">${m.email}</td>
+          <td class="py-2 pr-3 text-slate-200">${m.id}</td>
+          <td class="py-2 pr-3 text-slate-200">${m.nombre}</td>
+          <td class="py-2 pr-3 text-slate-200">${m.rol ?? ''}</td>
+          <td class="py-2 pr-3 text-slate-200">${m.email}</td>
           <td class="py-2 pr-3">
-            <button class="text-slate-700 hover:underline" data-view-miembro="${m.id}">Ver</button>
-            <span class="mx-1 text-slate-300">|</span>
-            <button class="text-red-700 hover:underline" data-edit-miembro="${m.id}">Editar</button>
-            <span class="mx-1 text-slate-300">|</span>
-            <button class="text-rose-700 hover:underline" data-del-miembro="${m.id}">Eliminar</button>
+            <button class="text-slate-300 hover:underline" data-view-miembro="${m.id}">Ver</button>
+            <span class="mx-1 text-slate-700">|</span>
+            <button class="text-red-400 hover:underline" data-edit-miembro="${m.id}">Editar</button>
+            <span class="mx-1 text-slate-700">|</span>
+            <button class="text-red-300 hover:underline" data-del-miembro="${m.id}">Eliminar</button>
           </td>
         `;
         tbody.appendChild(tr);
@@ -359,21 +369,21 @@
       });
       data.forEach(p => {
         const tr = document.createElement('tr');
-        tr.className = 'border-b';
+        tr.className = 'border-b border-slate-700';
         tr.innerHTML = `
-          <td class="py-2 pr-3">${p.id}</td>
-          <td class="py-2 pr-3">${p.nombre}</td>
-          <td class="py-2 pr-3">${p.estado}</td>
-          <td class="py-2 pr-3">${fmt(p.start_date)}</td>
-          <td class="py-2 pr-3">${fmt(p.end_date)}</td>
+          <td class="py-2 pr-3 text-slate-200">${p.id}</td>
+          <td class="py-2 pr-3 text-slate-200">${p.nombre}</td>
+          <td class="py-2 pr-3 text-slate-200">${p.estado}</td>
+          <td class="py-2 pr-3 text-slate-200">${fmt(p.start_date)}</td>
+          <td class="py-2 pr-3 text-slate-200">${fmt(p.end_date)}</td>
           <td class="py-2 pr-3">
-            <button class="text-slate-700 hover:underline" data-view-proyecto="${p.id}">Ver</button>
-            <span class="mx-1 text-slate-300">|</span>
-            <button class="text-red-700 hover:underline" data-edit-proyecto="${p.id}">Editar</button>
-            <span class="mx-1 text-slate-300">|</span>
-            <button class="text-red-700 hover:underline" data-assign="${p.id}">Asignar</button>
-            <span class="mx-1 text-slate-300">|</span>
-            <button class="text-rose-700 hover:underline" data-del-proyecto="${p.id}">Eliminar</button>
+            <button class="text-slate-300 hover:underline" data-view-proyecto="${p.id}">Ver</button>
+            <span class="mx-1 text-slate-700">|</span>
+            <button class="text-red-400 hover:underline" data-edit-proyecto="${p.id}">Editar</button>
+            <span class="mx-1 text-slate-700">|</span>
+            <button class="text-red-400 hover:underline" data-assign="${p.id}">Asignar</button>
+            <span class="mx-1 text-slate-700">|</span>
+            <button class="text-red-300 hover:underline" data-del-proyecto="${p.id}">Eliminar</button>
           </td>
         `;
         tbody.appendChild(tr);
